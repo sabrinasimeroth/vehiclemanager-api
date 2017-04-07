@@ -17,14 +17,25 @@ namespace VehicleManager.API.Controllers
     {
         private VehicleManagerDataContext db = new VehicleManagerDataContext();
 
-        // GET: api/Vehicles
-        public IQueryable<Vehicle> GetVehicles()
-        {
-            return db.Vehicles;
-        }
+		// GET: api/Vehicles
+		public IHttpActionResult GetVehicles()
+		{
+			var resultSet = db.Vehicles.Select(vehicle => new
+			{
+				vehicle.VehicleId,
+				vehicle.VehicleType,
+				vehicle.Make,
+				vehicle.Model,
+				vehicle.Year,
+				vehicle.Color,
+				vehicle.RetailPrice
+			});
 
-        // GET: api/Vehicles/5
-        [ResponseType(typeof(Vehicle))]
+			return Ok(resultSet);
+		}
+
+		// GET: api/Vehicles/5
+		[ResponseType(typeof(Vehicle))]
         public IHttpActionResult GetVehicle(int id)
         {
             Vehicle vehicle = db.Vehicles.Find(id);
@@ -33,7 +44,16 @@ namespace VehicleManager.API.Controllers
                 return NotFound();
             }
 
-            return Ok(vehicle);
+            return Ok(new
+			{
+				vehicle.VehicleId,
+				vehicle.VehicleType,
+				vehicle.Make,
+				vehicle.Model,
+				vehicle.Year,
+				vehicle.Color,
+				vehicle.RetailPrice
+			});
         }
 
         // PUT: api/Vehicles/5
@@ -50,7 +70,16 @@ namespace VehicleManager.API.Controllers
                 return BadRequest();
             }
 
-            db.Entry(vehicle).State = EntityState.Modified;
+			var dbVehicle = db.Vehicles.Find(id);
+
+			dbVehicle.Color = vehicle.Color;
+			dbVehicle.Make = vehicle.Make;
+			dbVehicle.Model = vehicle.Model;
+			dbVehicle.VehicleType = vehicle.VehicleType;
+			dbVehicle.Year = vehicle.Year;
+			dbVehicle.RetailPrice = vehicle.RetailPrice;
+
+            db.Entry(dbVehicle).State = EntityState.Modified;
 
             try
             {
@@ -83,7 +112,16 @@ namespace VehicleManager.API.Controllers
             db.Vehicles.Add(vehicle);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = vehicle.VehicleId }, vehicle);
+            return CreatedAtRoute("DefaultApi", new { id = vehicle.VehicleId }, new
+			{
+				vehicle.VehicleId,
+				vehicle.VehicleType,
+				vehicle.Make,
+				vehicle.Model,
+				vehicle.Year,
+				vehicle.Color,
+				vehicle.RetailPrice
+			});
         }
 
         // DELETE: api/Vehicles/5
@@ -99,7 +137,16 @@ namespace VehicleManager.API.Controllers
             db.Vehicles.Remove(vehicle);
             db.SaveChanges();
 
-            return Ok(vehicle);
+            return Ok(new
+			{
+				vehicle.VehicleId,
+				vehicle.VehicleType,
+				vehicle.Make,
+				vehicle.Model,
+				vehicle.Year,
+				vehicle.Color,
+				vehicle.RetailPrice
+			});
         }
 
         protected override void Dispose(bool disposing)

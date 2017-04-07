@@ -18,9 +18,18 @@ namespace VehicleManager.API.Controllers
         private VehicleManagerDataContext db = new VehicleManagerDataContext();
 
         // GET: api/Customers
-        public IQueryable<Customer> GetCustomers()
+        public IHttpActionResult GetCustomers()
         {
-            return db.Customers;
+            var resultSet =  db.Customers.Select(customer => new
+			{
+				customer.CustomerId,
+				customer.EmailAddress,
+				customer.Telephone,
+				customer.FirstName,
+				customer.LastName
+			});
+
+			return Ok(resultSet);
         }
 
         // GET: api/Customers/5
@@ -33,7 +42,14 @@ namespace VehicleManager.API.Controllers
                 return NotFound();
             }
 
-            return Ok(customer);
+            return Ok(new
+			{
+				customer.CustomerId,
+				customer.EmailAddress,
+				customer.Telephone,
+				customer.FirstName,
+				customer.LastName
+			});
         }
 
         // PUT: api/Customers/5
@@ -50,7 +66,13 @@ namespace VehicleManager.API.Controllers
                 return BadRequest();
             }
 
-            db.Entry(customer).State = EntityState.Modified;
+			var dbCustomer = db.Customers.Find(id);
+			dbCustomer.EmailAddress = customer.EmailAddress;
+			dbCustomer.FirstName = customer.FirstName;
+			dbCustomer.LastName = customer.LastName;
+			dbCustomer.Telephone = customer.Telephone;
+
+            db.Entry(dbCustomer).State = EntityState.Modified;
 
             try
             {
@@ -83,7 +105,14 @@ namespace VehicleManager.API.Controllers
             db.Customers.Add(customer);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = customer.CustomerId }, customer);
+            return CreatedAtRoute("DefaultApi", new { id = customer.CustomerId }, new
+			{
+				customer.CustomerId,
+				customer.EmailAddress,
+				customer.Telephone,
+				customer.FirstName,
+				customer.LastName
+			});
         }
 
         // DELETE: api/Customers/5
@@ -99,7 +128,14 @@ namespace VehicleManager.API.Controllers
             db.Customers.Remove(customer);
             db.SaveChanges();
 
-            return Ok(customer);
+            return Ok(new
+			{
+				customer.CustomerId,
+				customer.EmailAddress,
+				customer.Telephone,
+				customer.FirstName,
+				customer.LastName
+			});
         }
 
         protected override void Dispose(bool disposing)

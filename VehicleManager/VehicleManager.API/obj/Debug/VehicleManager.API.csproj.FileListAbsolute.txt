@@ -50,3 +50,4 @@ C:\dev\vehiclemanager-api\vehiclemanager-backend\VehicleManager\VehicleManager.A
 C:\dev\vehiclemanager-api\vehiclemanager-backend\VehicleManager\VehicleManager.API\obj\Debug\VehicleManager.API.Migrations.InitialMigration.resources
 C:\dev\vehiclemanager-api\vehiclemanager-backend\VehicleManager\VehicleManager.API\obj\Debug\VehicleManager.API.csproj.GenerateResource.Cache
 C:\dev\vehiclemanager-api\vehiclemanager-backend\VehicleManager\VehicleManager.API\bin\Faker.dll
+C:\dev\vehiclemanager-api\vehiclemanager-backend\VehicleManager\VehicleManager.API\obj\Debug\VehicleManager.API.Migrations.removedateofbirth.resources

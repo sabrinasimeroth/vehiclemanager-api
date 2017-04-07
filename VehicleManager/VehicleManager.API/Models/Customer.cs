@@ -18,8 +18,6 @@ namespace VehicleManager.API.Models
 
 		public string Telephone { get; set; }
 
-		public DateTime DateOfBirth { get; set; }
-
 		//Navigation Properties
 		public virtual ICollection<Sale> Sales { get; set; }
 	}
